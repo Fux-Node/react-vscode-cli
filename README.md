@@ -1,2 +1,2 @@
 # react-vscode-cli
-Now create extension's rich UI with react js.
+Create vscode extension's rich UI with react js. 
