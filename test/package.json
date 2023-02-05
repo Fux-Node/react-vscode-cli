@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:test.helloWorld"
+    "*"
   ],
   "main": "./dist/extension.js",
   "contributes": {
