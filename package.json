@@ -7,7 +7,7 @@
   "main": "cli/index.js",
   "preferGlobal": true,
   "directories": {
-    "test": "test"
+    "bin": "react-vscode-bin"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

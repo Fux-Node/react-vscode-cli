@@ -16,6 +16,59 @@ const createLoader = () => {
     }
 }
 
+const loadingStop = (loadWithName) => {
+    loadWithName.stopLoad()
+}
+
+const createUrl = () => {
+    let owner = 'microsoft'
+    let repo = 'vscode'
+    let path = ''
+    return `https://api.github.com/repos/${owner}/${repo}/contents/${path}`
+}
+
+const fileRead = (url = createUrl()) => {
+    return new Promise(async (res, rej) => {
+        try {
+            const data = await fetch(url).then(res => res.json())
+            res(data)
+        } catch (error) {
+            rej(error)
+        }
+    })
+}
+
+const ignoreFileandFolders = [
+    ".github",
+    "node_modules"
+]
+
+const checkIfignored = (name) => {
+    if (ignoreFileandFolders.findIndex(i => i === name) === -1) {
+        return false;
+    }
+    return true;
+}
+
+let fileObj = {}
+const createFileandFolder = (data) => {
+    data.map(item => {
+        if (item.type === "dir") {
+            if (checkIfignored(item.name)) return;
+
+        } else if (item.type === "file") {
+
+        }
+    })
+}
+
+const invokeFiles = (url) => {
+    fileRead(url).then((data) => {
+        console.log(data)
+    }).catch((err) => {
+        console.log(err)
+    })
+}
 
 const commandAction = (params) => {
     const name = params[0]
@@ -27,8 +80,8 @@ const commandAction = (params) => {
             loadWithName.stopLoad()
             if (err) return console.log(chalk.red(err));
             loadWithName(`Creating package.json file`)
-            exec(`cd ${name} && npm init -y`, (err, stdout, stderr) => {
-                setTimeout(() => loadWithName.stopLoad(), 3000)
+            exec(`cd ${name}`, (err, stdout, stderr) => {
+                setTimeout(() => loadingStop(loadWithName), 1000)
             })
         });
     } else {
