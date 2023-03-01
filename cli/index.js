@@ -4,43 +4,16 @@ import { exec } from "child_process"
 let args = process.argv.slice(2);
 import { loading } from 'cli-loading-animation';
 import cliSpinners from 'cli-spinners';
+import fs from "fs";
+import path from "path"
+import editJsonFile from "edit-json-file";
 
-const createLoader = () => {
-    const withName = (name) => {
-        const { start, stop } = loading(chalk.blue(name), { spinner: cliSpinners.bluePulse })
-        withName.stopLoad = stop;
-        start()
-    }
-    return {
-        loadWithName: withName,
-    }
-}
-
-const loadingStop = (loadWithName) => {
-    loadWithName.stopLoad()
-}
-
-const createUrl = () => {
-    let owner = 'microsoft'
-    let repo = 'vscode'
-    let path = ''
-    return `https://api.github.com/repos/${owner}/${repo}/contents/${path}`
-}
-
-const fileRead = (url = createUrl()) => {
-    return new Promise(async (res, rej) => {
-        try {
-            const data = await fetch(url).then(res => res.json())
-            res(data)
-        } catch (error) {
-            rej(error)
-        }
-    })
-}
 
 const ignoreFileandFolders = [
     ".github",
-    "node_modules"
+    "node_modules",
+    "build",
+    ".codesandbox"
 ]
 
 const checkIfignored = (name) => {
@@ -50,39 +23,84 @@ const checkIfignored = (name) => {
     return true;
 }
 
-let fileObj = {}
-const createFileandFolder = (data) => {
-    data.map(item => {
-        if (item.type === "dir") {
-            if (checkIfignored(item.name)) return;
+async function cloneRepoFromGitHub(url, repo, dest) {
+    try {
+        const response = await fetch(url);
 
-        } else if (item.type === "file") {
-
+        if (!response.ok) {
+            throw `Failed to Create Project. Please Report Complaints in https://fuxnode.com/complaints`;
         }
-    })
+
+        const contents = await response.json();
+
+        for (const item of contents) {
+            if (checkIfignored(item.name)) continue;
+
+            if (item.type === 'file') {
+                const fileUrl = item.download_url;
+                const filePath = path.join(dest, item.name);
+
+                const fileResponse = await fetch(fileUrl);
+                const fileContents = await fileResponse.text();
+                fs.writeFileSync(filePath, fileContents);
+                console.log(chalk.blue(`File Created ${item.name}`))
+            }
+
+            if (item.type === 'dir') {
+                const dirPath = path.join(dest, item.name);
+                if (!fs.existsSync(dirPath)) {
+                    fs.mkdir(dirPath, { recursive: true }, (err) => {
+                        if (err) {
+                            console.error(err);
+                            return;
+                        }
+                    });
+                }
+                await cloneRepoFromGitHub(item.url, repo, dirPath);
+            }
+        }
+    } catch (error) {
+        throw error
+    }
 }
 
-const invokeFiles = (url) => {
-    fileRead(url).then((data) => {
-        console.log(data)
-    }).catch((err) => {
-        console.log(err)
-    })
+const mainUrl = {
+    owner: 'Fux-Node',
+    repo: 'react-vscode-framework',
+    url: `https://api.github.com/repos/Fux-Node/react-vscode-framework/contents`
+}
+
+const demoUrl = {
+    owner: 'narkreeta',
+    repo: 'Youtube',
+    url: `https://api.github.com/repos/narkreeta/Youtube/contents`
+}
+
+const changeJsonFileName = (dest, name) => {
+    let file = editJsonFile(dest);
+    file.set("name", name)
+    file.set("publisher", name)
+    file.save()
 }
 
 const commandAction = (params) => {
     const name = params[0]
+    const isTest = params.includes("--test")
     const re = new RegExp("^[a-zA-Z0-9]+$", "g")
-    const { loadWithName } = createLoader()
     if (name && re.test(name)) {
-        loadWithName(`Creating File ${name}`)
-        exec(`mkdir ${name}`, (err, stdout, stderr) => {
-            loadWithName.stopLoad()
+        exec(`mkdir ${name}`, async (err, stdout, stderr) => {
             if (err) return console.log(chalk.red(err));
-            loadWithName(`Creating package.json file`)
-            exec(`cd ${name}`, (err, stdout, stderr) => {
-                setTimeout(() => loadingStop(loadWithName), 1000)
-            })
+            const destination = path.join(process.cwd(), name)
+            try {
+                const userChoice = isTest ? demoUrl : mainUrl
+                await cloneRepoFromGitHub(userChoice.url, userChoice.repo, destination);
+                const destOfPackage = path.join(destination, "package.json");
+                changeJsonFileName(destOfPackage, name);
+                console.log(chalk.green("Congrats !!! React-Vscode-Framework Created Successfully."))
+                console.log(chalk.yellowBright("visit : https://docs.fuxnode.com/react-vscode-framework"))
+            } catch (error) {
+                console.log(chalk.red(error));
+            }
         });
     } else {
         console.log(chalk.red('ERROR : Entered Name is not Valid. Please put valid name.'));
