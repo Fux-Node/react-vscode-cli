@@ -1,13 +1,13 @@
 {
   "name": "react-vscode-cli",
   "version": "1.0.0",
-  "type" : "module",
+  "type": "module",
   "bin": "cli/index.js",
   "description": "Create vscode extension's rich UI with react js.",
   "main": "cli/index.js",
   "preferGlobal": true,
   "directories": {
-    "test": "test"
+    "bin": "react-vscode-bin"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,6 +24,9 @@
   },
   "homepage": "https://github.com/Fux-Node/react-vscode-cli#readme",
   "dependencies": {
-    "chalk": "^5.2.0"
+    "chalk": "^5.2.0",
+    "cli-loading-animation": "^1.0.6",
+    "cli-spinners": "^2.7.0",
+    "edit-json-file": "^1.7.0"
   }
 }
