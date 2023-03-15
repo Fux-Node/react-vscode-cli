@@ -2,8 +2,6 @@
 import chalk from 'chalk';
 import { exec } from "child_process"
 let args = process.argv.slice(2);
-import { loading } from 'cli-loading-animation';
-import cliSpinners from 'cli-spinners';
 import fs from "fs";
 import path from "path"
 import editJsonFile from "edit-json-file";
@@ -85,14 +83,15 @@ const changeJsonFileName = (dest, name) => {
 
 const commandAction = (params) => {
     const name = params[0]
-    const isTest = params.includes("--test")
+    // const isTest = params.includes("--test")
     const re = new RegExp("^[a-zA-Z0-9]+$", "g")
     if (name && re.test(name)) {
         exec(`mkdir ${name}`, async (err, stdout, stderr) => {
             if (err) return console.log(chalk.red(err));
             const destination = path.join(process.cwd(), name)
             try {
-                const userChoice = isTest ? demoUrl : mainUrl
+                // const userChoice = isTest ? demoUrl : mainUrl
+                const userChoice = mainUrl;
                 await cloneRepoFromGitHub(userChoice.url, userChoice.repo, destination);
                 const destOfPackage = path.join(destination, "package.json");
                 changeJsonFileName(destOfPackage, name);
