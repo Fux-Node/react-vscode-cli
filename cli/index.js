@@ -26,7 +26,7 @@ async function cloneRepoFromGitHub(url, repo, dest) {
         const response = await fetch(url);
 
         if (!response.ok) {
-            throw `Failed to Create Project. Please Report Complaints in https://fuxnode.com/complaints`;
+            throw `Failed to Create Project. Please Report Issues in https://github.com/Fux-Node/react-vscode-framework/issues/`;
         }
 
         const contents = await response.json();
@@ -65,13 +65,13 @@ async function cloneRepoFromGitHub(url, repo, dest) {
 const mainUrl = {
     owner: 'Fux-Node',
     repo: 'react-vscode-framework',
-    url: `https://api.github.com/repos/Fux-Node/react-vscode-framework/contents`
+    url: `https://api.github.com/repos/Fux-Node/react-vscode-framework/contents?ref=main`
 }
 
 const demoUrl = {
     owner: 'narkreeta',
     repo: 'Youtube',
-    url: `https://api.github.com/repos/narkreeta/Youtube/contents`
+    url: `https://api.github.com/repos/narkreeta/Youtube/contents?ref=regex`
 }
 
 const changeJsonFileName = (dest, name) => {
