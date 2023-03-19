@@ -96,7 +96,7 @@ const commandAction = (params) => {
                 const destOfPackage = path.join(destination, "package.json");
                 changeJsonFileName(destOfPackage, name);
                 console.log(chalk.green("Congrats !!! React-Vscode-Framework Created Successfully."))
-                console.log(chalk.yellowBright("visit : https://docs.fuxnode.com/react-vscode-framework"))
+                console.log(chalk.yellowBright("visit : https://fuxnode.com/docs"))
             } catch (error) {
                 console.log(chalk.red(error));
             }
