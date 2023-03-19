@@ -25,7 +25,11 @@
     "typescript",
     "fuxnode"
   ],
-  "author": "Sailendra Dash <sailendradash@fuxnode.com>",
+  "author": {
+    "name": "sailendra dash",
+    "email": "sailendradash@fuxnode.com",
+    "url": "https://fuxnode.com"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Fux-Node/react-vscode-cli/issues"
