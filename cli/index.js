@@ -68,10 +68,10 @@ const mainUrl = {
     url: `https://api.github.com/repos/Fux-Node/react-vscode-framework/contents?ref=main`
 }
 
-const demoUrl = {
-    owner: 'narkreeta',
-    repo: 'Youtube',
-    url: `https://api.github.com/repos/narkreeta/Youtube/contents?ref=regex`
+const devUrl = {
+    owner: 'Fux-Node',
+    repo: 'react-vscode-framework',
+    url: `https://api.github.com/repos/Fux-Node/react-vscode-framework/contents?ref=dev`
 }
 
 const changeJsonFileName = (dest, name) => {
@@ -83,15 +83,15 @@ const changeJsonFileName = (dest, name) => {
 
 const commandAction = (params) => {
     const name = params[0]
-    // const isTest = params.includes("--test")
+    const isDev = params.includes("--dev")
     const re = new RegExp("^[a-zA-Z0-9]+$", "g")
     if (name && re.test(name)) {
         exec(`mkdir ${name}`, async (err, stdout, stderr) => {
             if (err) return console.log(chalk.red(err));
             const destination = path.join(process.cwd(), name)
             try {
-                // const userChoice = isTest ? demoUrl : mainUrl
-                const userChoice = mainUrl;
+                const userChoice = isDev ? devUrl : mainUrl
+                // const userChoice = mainUrl;
                 await cloneRepoFromGitHub(userChoice.url, userChoice.repo, destination);
                 const destOfPackage = path.join(destination, "package.json");
                 changeJsonFileName(destOfPackage, name);
