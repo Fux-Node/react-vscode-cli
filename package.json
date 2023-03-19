@@ -17,7 +17,7 @@
     "url": "git+https://github.com/Fux-Node/react-vscode-cli.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sailendra Dash <sailendradash@fuxnode.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Fux-Node/react-vscode-cli/issues"
