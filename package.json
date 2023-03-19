@@ -16,7 +16,14 @@
     "type": "git",
     "url": "git+https://github.com/Fux-Node/react-vscode-cli.git"
   },
-  "keywords": [],
+  "keywords": [
+    "reactjs",
+    "vscode",
+    "react vscode framework",
+    "vscode extension react js",
+    "create vscode ext with react",
+    "typescript"
+  ],
   "author": "Sailendra Dash <sailendradash@fuxnode.com>",
   "license": "ISC",
   "bugs": {
