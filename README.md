@@ -38,10 +38,14 @@
 
     npx react-vscode-cli projectname
 
+**Now Install All Dependencies**
+
+    cd projectname && npm install
+
 **Now open that project on your visual studio code IDE**
 
-    cd projectname && code .
-
+    code .
+    
 > Once your project open in vscode then click on F5 or start debugging manually by navigating through Run > Start Debugging
 
 # File Structure
