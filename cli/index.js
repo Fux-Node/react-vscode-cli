@@ -4,6 +4,7 @@ import { exec } from "child_process"
 let args = process.argv.slice(2);
 import fs from "fs";
 import path from "path"
+import fetch from "node-fetch"
 import editJsonFile from "edit-json-file";
 
 
@@ -19,6 +20,19 @@ const checkIfignored = (name) => {
         return false;
     }
     return true;
+}
+
+async function downloadFile(url, filePath) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
+    }
+    const dest = fs.createWriteStream(filePath);
+    response.body.pipe(dest);
+    return new Promise((resolve, reject) => {
+        dest.on('finish', resolve);
+        dest.on('error', reject);
+    });
 }
 
 async function cloneRepoFromGitHub(url, repo, dest) {
@@ -38,10 +52,15 @@ async function cloneRepoFromGitHub(url, repo, dest) {
                 const fileUrl = item.download_url;
                 const filePath = path.join(dest, item.name);
 
-                const fileResponse = await fetch(fileUrl);
-                const fileContents = await fileResponse.text();
-                fs.writeFileSync(filePath, fileContents);
-                console.log(chalk.blue(`File Created ${item.name}`))
+                if (filePath.toLowerCase().endsWith(".png") || filePath.toLowerCase().endsWith(".jpg") || filePath.toLowerCase().endsWith(".jpeg")) {
+                    await downloadFile(fileUrl, filePath)
+                    console.log(chalk.blue(`File Created ${item.name}`))
+                } else {
+                    const fileResponse = await fetch(fileUrl);
+                    const fileContents = await fileResponse.text();
+                    fs.writeFileSync(filePath, fileContents);
+                    console.log(chalk.blue(`File Created ${item.name}`))
+                }
             }
 
             if (item.type === 'dir') {

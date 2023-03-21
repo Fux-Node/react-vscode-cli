@@ -39,6 +39,7 @@
     "chalk": "^5.2.0",
     "cli-loading-animation": "^1.0.6",
     "cli-spinners": "^2.7.0",
-    "edit-json-file": "^1.7.0"
+    "edit-json-file": "^1.7.0",
+    "node-fetch": "^3.3.1"
   }
 }
