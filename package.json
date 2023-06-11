@@ -1,6 +1,6 @@
 {
   "name": "react-vscode-cli",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "bin": "cli/index.js",
   "description": "Create vscode extension's rich UI with react js.",
@@ -40,6 +40,7 @@
     "cli-loading-animation": "^1.0.6",
     "cli-spinners": "^2.7.0",
     "edit-json-file": "^1.7.0",
-    "node-fetch": "^3.3.1"
+    "node-fetch": "^3.3.1",
+    "rimraf": "^5.0.1"
   }
 }
