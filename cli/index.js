@@ -53,7 +53,7 @@ const commandAction = (params) => {
           console.log("\n");
           console.log(
             chalk.green(
-              "Congrats!!!, React-Vscode-Framework Created Successfully."
+              "Congrats!!!, React-Vscode-Framework Created Successfully..."
             )
           );
           console.log(chalk.yellowBright("visit : https://fuxnode.com/docs"));
